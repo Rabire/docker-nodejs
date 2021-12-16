@@ -16,7 +16,8 @@ COPY . ./
 # on copie d'abord le package.json seul pour des raisons d'optimisation (histoires de cache...)
 # permet aussi de refaire touts les étapes depuis la step 3 si le package.json change
 
-EXPOSE 4000
+ENV PORT 4000
+EXPOSE $PORT
 # C'est juste de la doc, ca n'expose pas vraiment le port 3000
 # le mode exterieur (mon ordi) ne peux pas parler avec un container docker (securitée)
 
@@ -35,7 +36,7 @@ CMD ["npm", "run", "dev"]
 #   . signifie "regarde le Dockerfile du dossier courrant"
 
 
-# docker run -p 4000:3000 -d --name node-app -v $(pwd):/app node-app-image
+# docker run --env-file ./.env -p 4000:5000 -d --name node-app -v $(pwd):/app node-app-image
 #   création du container depuis l'image
 #   docker run [OPTIONS] <imagesToBuild>
 #   -d = detatched mode
@@ -45,6 +46,11 @@ CMD ["npm", "run", "dev"]
 #   -v  pour volumes, syncrinisation de fichier entre la machine locale et le container
 #       -v pathToFolderInLocal:pathToFolderInContainer
 #       $(pwd) sur linux
+#   --env PORT=5000
+#       Overwrite une variable d'env 
+#   --env-file ./.env
+#       prend un fichier en var d'environement
+
 
 # docker ps -a
 #   voir les containers qui tournent
@@ -53,12 +59,23 @@ CMD ["npm", "run", "dev"]
 # docker logs node-app 
 #   voir les logs du container node-app au moment du run
 
-# docker rm node-app -f
-#   suppr le container node-app de force (sans le stopper avant)
+# docker rm node-app -fv
+#   suppr le container node-app
+#   -f de force (sans le stopper avant)
+#   -fv avec tout ses volumes
 
 # docker exec -it node-app bash
 # permet de rentrer dans le bash du container qui a la nom node-app en (-it mode interactif)
-# exit (pout sortir du container)
+#   exit (pout sortir du container)
+#   printenv (pout afficher les var d'env)
 
 # on a pas besoin des node_modules et du Dockerfile pour faire fonctionner l'api
 # on ajoute donc le fichier .dockerignore 
+
+# docker volume ls 
+#   liste les volumes 
+
+# docker volume rm volumeName
+# docker volume prune
+#   supprime les volumes 
+#   prune = tout les volumes innutiles 
