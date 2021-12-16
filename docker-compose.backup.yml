@@ -1,9 +1,12 @@
-# options partagés entre les environements
 version: "3"
 services:
   node-app:
     build: .
     ports:
       - "4000:5000"
+    volumes:
+      - ./:/app
     env_file:
       - ./.env
+  # frontend
+  #   options

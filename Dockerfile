@@ -8,8 +8,15 @@ WORKDIR /app
 COPY package.json .
 # copie le package.json dans le dossier courrant, comme le WORKDIR est définie, . signifie /app
 
-RUN npm install
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 # RUN - execute une commande
+# Les espaces dans le chrochet du if sont important
+
+
 
 COPY . ./
 # on copie tout les fichier dans /app
@@ -22,7 +29,7 @@ EXPOSE $PORT
 # le mode exterieur (mon ordi) ne peux pas parler avec un container docker (securitée)
 
 ## RUNNING
-CMD ["npm", "run", "dev"]
+CMD ["node", "index.js"]
 
 
 # docker image ls

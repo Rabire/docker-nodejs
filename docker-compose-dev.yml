@@ -1,0 +1,14 @@
+version: "3"
+services:
+  node-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./:/app
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+# docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+# docker-compose up avec le fichier docker-compose.yml et le docker-compose-dev.yml qui ré-écrit par dessus (l'ordre est important)
