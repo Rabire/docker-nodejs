@@ -21,7 +21,7 @@ EXPOSE 4000
 # le mode exterieur (mon ordi) ne peux pas parler avec un container docker (securitée)
 
 ## RUNNING
-CMD ["node", "index.js"]
+CMD ["npm", "run", "dev"]
 
 
 # docker image ls
@@ -34,16 +34,24 @@ CMD ["node", "index.js"]
 #   build l'image avec un titre (nom) node-app-image
 #   . signifie "regarde le Dockerfile du dossier courrant"
 
-# docker run -p 4000:3000 -d --name node-app node-app-image
+
+# docker run -p 4000:3000 -d --name node-app -v $(pwd):/app node-app-image
 #   création du container depuis l'image
 #   docker run [OPTIONS] <imagesToBuild>
 #   -d = detatched mode
 #   (Docker container runs in the background of your terminal. It does not receive input or display output.)
 #   3000 = port surlequel on va envoyer le trafique dans le container (port de l'app)
 #   4000 = port surlequel on recoir des requetes du monde exterieur
+#   -v  pour volumes, syncrinisation de fichier entre la machine locale et le container
+#       -v pathToFolderInLocal:pathToFolderInContainer
+#       $(pwd) sur linux
 
-# docker ps
+# docker ps -a
 #   voir les containers qui tournent
+#   -a pour voir même les containers qui ne tournent pas
+
+# docker logs node-app 
+#   voir les logs du container node-app au moment du run
 
 # docker rm node-app -f
 #   suppr le container node-app de force (sans le stopper avant)
